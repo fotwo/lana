@@ -1,0 +1,2 @@
+First, you should upload the file 'srilm.是1.7.2版.tgz'.
+To install srilm.1.7.2.tgz, you should change the file name to 'srilm.tgz', then run the script 'install_srilm.sh'.
