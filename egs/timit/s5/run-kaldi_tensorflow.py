@@ -50,7 +50,7 @@ def get_args():
     # configuration file.
     parser.add_argument("--basic-conf-file",type=str,required=True,dest='basic_conf_file')
 
-    parser.add_argument("--gpu-card-id",type=int,dest='gpu_card_id',
+    parser.add_argument("--gpu-card-id",type=str,dest='gpu_card_id',
                         default=0,help="""command to specific gpu card id you'd like to use,
                         for this stage, tenssorflow under kaldi only supports one gpu card""")
 
@@ -255,7 +255,7 @@ if args.train_nnet:
         os.system('gunzip -c %s > %s' % (alifile, alifile_unzip))
     if(not os.path.isfile(alifile_in_pdftxt)):
         os.system('ali-to-pdf %s ark:%s ark,t:%s' % (ali_final_mdl, alifile_unzip, alifile_in_pdftxt))
-    if(os.path.isfile(alifile_in_pdftxt_gzipped)):
+    if(not os.path.isfile(alifile_in_pdftxt_gzipped)):
         os.system('gzip -c %s > %s' % (alifile_in_pdftxt, alifile_in_pdftxt_gzipped))
     #train the neural net
     # set_trace()
