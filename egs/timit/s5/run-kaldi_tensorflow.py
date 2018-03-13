@@ -210,7 +210,7 @@ config.set('nnet','valid_retries',str(args.valid_retries))
 config.set('nnet','check_freq',str(args.check_frequency))
 config.set('nnet','visualise',str(args.visualize))
 #
-set_trace()
+# set_trace()
 #create the neural net
 Nnet = nnet.Nnet(config, input_dim, num_labels)
 
@@ -264,7 +264,7 @@ if args.test_nnet:
     # decoding test feature with different graph_dir, of course, test feature dir always more than 1 
     test_feature_dir = config.get('dnn-features','test')
     test_feature_dir_split = test_feature_dir.strip().split(',')
-    
+
     # decoding all test feature sets and lang dir
     for graph_dir_x in graph_dir_split:
         for test_feature_dir_x in test_feature_dir_split:
@@ -280,6 +280,10 @@ if args.test_nnet:
             os.system('cp -r %s %s' %(gmm_dir + '/' + graph_dir_x, decodedir))
             os.system('cp %s %s' %(config.get('directories','test_features') + '/' + test_feature_dir_x + '/utt2spk', decodedir))
             os.system('cp %s %s' %(config.get('directories','test_features') + '/' + test_feature_dir_x + '/text', decodedir))
+
+            os.system('cp %s %s' %(config.get('directories','test_features') + '/' + test_feature_dir_x + '/stm', decodedir))
+            os.system('cp %s %s' %(config.get('directories','test_features') + '/' + test_feature_dir_x + '/glm', decodedir))
+
             num_job=8
             #decode using kaldi
             os.system('./steps/decode_tensorflow.sh --cmd %s --nj %s %s/graph* %s %s/kaldi_decode | tee %s/decode.log || exit 1;' % ( config.get('general','cmd'), num_job, decodedir, decodedir, decodedir, decodedir))
