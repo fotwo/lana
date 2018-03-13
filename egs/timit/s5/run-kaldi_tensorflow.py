@@ -50,6 +50,10 @@ def get_args():
     # configuration file.
     parser.add_argument("--basic-conf-file",type=str,required=True,dest='basic_conf_file')
 
+    parser.add_argument("--gpu-card-id",type=int,dest='gpu_card_id',
+                        default=0,help="""command to specific gpu card id you'd like to use,
+                        for this stage, tenssorflow under kaldi only supports one gpu card""")
+
     # params for precedure.
     parser.add_argument("--train-nnet",type=ast.literal_eval,dest='train_nnet',default=True)
 
@@ -156,7 +160,7 @@ config.read(args.basic_conf_file)
 current_dir = os.getcwd()
 
 # setting setting gpu used
-os.environ['CUDA_VISIBLE_DEVICES']=config.get('general','gpu_card_id')
+os.environ['CUDA_VISIBLE_DEVICES']=args.gpu_card_id
 
 # get the feature input dim
 reader = ark.ArkReader(config.get('directories','train_features') + '/' + config.get('dnn-features','train') + '/feats.scp')
