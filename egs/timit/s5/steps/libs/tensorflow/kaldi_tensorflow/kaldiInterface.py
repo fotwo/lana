@@ -31,12 +31,12 @@ def shuffle_examples(featdir):
 #
 #@return a dictionary containing the alignments with the utterance IDs as keys      
 def read_alignments(filename):
-	print(("alifile_name: "+str(filename)))
+	print("alifile_name: "+str(filename))
 	with gzip.open(filename, 'rb') as f:
 		alignments = {}
 		for line in f:
-			data = line.decode().strip().split(' ')
-			alignments[data[0]] = np.asarray(list(map(int,data[1:len(data)]))) #segment:alignment
+			data = line.strip().split(' ')
+			alignments[data[0]] = np.asarray(map(int,data[1:len(data)])) #segment:alignment
 	return alignments
 
 ## read a segment file that is used in kaldi
@@ -48,7 +48,7 @@ def read_segments(filename):
 	with open(filename) as f:
 		segments = OrderedDict()
 		for line in f:
-			data = line.decode().strip().split(' ') #seg utt begin end
+			data = line.strip().split(' ') #seg utt begin end
 			if data[1] not in segments:
 				segments[data[1]] = [(data[0], float(data[2]), float(data[3]))] #utt: [(seg , begin, end)]
 			else:
@@ -64,7 +64,7 @@ def read_wavfiles(filename):
 	with open(filename) as f:
 		wavfiles = OrderedDict()
 		for line in f:
-			data = line.decode().strip().split(' ')
+			data = line.strip().split(' ')
 			if len(data) == 2: #wav.scp contains filenames
 				wavfiles[data[0]] = (data[1], False) #utterance:(filename, not extended)
 			else: #wav.scp contains extended filenames

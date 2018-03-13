@@ -4,8 +4,8 @@
 
 import numpy as np
 
-from . import ark
-from . import kaldiInterface
+import ark
+import kaldiInterface
 
 ## Class that can read features from a Kaldi archive and process them (cmvn and splicing)
 class FeatureReader:
@@ -73,7 +73,7 @@ class Batchdispenser:
 		
 		#store the feature reader
 		self.featureReader = featureReader
-		print(("alifile: "+str(alifile)))
+		print("alifile: "+str(alifile))
 		#read the alignments
 		self.alignments = kaldiInterface.read_alignments(alifile)
 		#save the number of labels
@@ -104,10 +104,10 @@ class Batchdispenser:
 				#update number of utterances in the batch
 				n += 1
 			else:
-				print(('WARNING no alignment for %s' % utt_id))
+				print('WARNING no alignment for %s' % utt_id)
 		
 		#reahape the batch data
-		batch_data = batch_data.reshape(int(batch_data.size/utt_mat.shape[1]), utt_mat.shape[1])
+		batch_data = batch_data.reshape(batch_data.size/utt_mat.shape[1], utt_mat.shape[1])
 		
 		#put labels in one hot encoding
 		batch_labels = (np.arange(self.num_labels) == batch_labels[:,np.newaxis]).astype(np.float32)
@@ -148,7 +148,7 @@ class Batchdispenser:
 	#
 	#@return a numpy array containing the label prior probabilities
 	def computePrior(self):
-		prior = np.array([(np.arange(self.num_labels) == alignment[:,np.newaxis]).astype(np.float32).sum(0) for alignment in list(self.alignments.values())]).sum(0)
+		prior = np.array([(np.arange(self.num_labels) == alignment[:,np.newaxis]).astype(np.float32).sum(0) for alignment in self.alignments.values()]).sum(0)
 		return prior/prior.sum()
 		
 	##the number of utterances

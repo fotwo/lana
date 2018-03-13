@@ -11,8 +11,8 @@ import shutil
 import os
 import sys
 sys.path.append('steps/')
-from . import nnetgraph
-from . import nnetactivations
+import nnetgraph
+import nnetactivations
 import libs.tensorflow.kaldi_tensorflow.batchdispenser as batchdispenser
 import libs.tensorflow.kaldi_tensorflow.ark as ark
 
@@ -52,7 +52,7 @@ class Nnet:
             activation = nnetactivations.Tf_wrapper(activation, tf.nn.tanh)
         elif self.conf['nonlin'] == 'linear':
             # activation = nnetactivations.Tf_wrapper(activation, lambda(x): x)
-            activation = nnetactivations.Tf_wrapper(activation, lambda x: x)
+            activation = nnetactivations.Tf_wrapper(activation, x)
         else:
             raise Exception('unkown nonlinearity')
             
@@ -73,7 +73,7 @@ class Nnet:
     def train(self, featdir, alifile):
         
         #create a feature reader
-        print(("featdir: "+str(featdir)))
+        print("featdir: "+str(featdir))
         reader = batchdispenser.FeatureReader(featdir + '/feats_shuffled.scp', featdir + '/cmvn.scp', featdir + '/utt2spk', int(self.conf['context_width']))
 
         #create a batch dispenser
@@ -126,7 +126,7 @@ class Nnet:
             #do a validation step
             if val_data is not None:
                 validation_loss = trainer.evaluate(val_data, val_labels)
-                print(('validation loss at step %d: %f' %(step, validation_loss )))
+                print('validation loss at step %d: %f' %(step, validation_loss ))
                 validation_step = step
                 trainer.saveTrainer(self.conf['savedir'] + '/training/validated')
                 num_retries = 0
@@ -141,7 +141,7 @@ class Nnet:
                 loss = trainer.update(batch_data, batch_labels)
                 
                 #print the progress
-                print(('step %d/%d loss: %f' %(step, num_steps, loss)))
+                print('step %d/%d loss: %f' %(step, num_steps, loss))
                 
                 #increment the step
                 step+=1
@@ -149,7 +149,7 @@ class Nnet:
                 #validate the model if required
                 if step%int(self.conf['valid_frequency']) == 0 and val_data is not None:
                     current_loss = trainer.evaluate(val_data, val_labels)
-                    print(('validation loss at step %d: %f' %(step, current_loss)))
+                    print('validation loss at step %d: %f' %(step, current_loss))
                     
                     if self.conf['valid_adapt'] == 'True':
                         #if the loss increased, half the learning rate and go back to the previous validation step
@@ -184,13 +184,13 @@ class Nnet:
                 if int(self.conf['add_layer_period']) > 0:
                     if step%int(self.conf['add_layer_period']) == 0 and step/int(self.conf['add_layer_period']) < int(self.conf['num_hidden_layers']):
                     
-                        print(('adding layer, the model now holds %d/%d layers' %(step/int(self.conf['add_layer_period']) + 1, int(self.conf['num_hidden_layers']))))
+                        print('adding layer, the model now holds %d/%d layers' %(step/int(self.conf['add_layer_period']) + 1, int(self.conf['num_hidden_layers'])))
                         trainer.control_ops['add'].run()
                         trainer.control_ops['init'].run()
                     
                         #do a validation step
                         validation_loss = trainer.evaluate(val_data, val_labels)
-                        print(('validation loss at step %d: %f' %(step, validation_loss )))
+                        print('validation loss at step %d: %f' %(step, validation_loss ))
                         validation_step = step
                         trainer.saveTrainer(self.conf['savedir'] + '/training/validated')
                         num_retries = 0

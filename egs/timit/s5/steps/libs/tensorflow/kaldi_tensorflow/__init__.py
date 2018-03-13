@@ -3,8 +3,8 @@
 
 # This library has methods and modules used for kaldi-tensorflow interaction
 
-from . import ark
-from . import batchdispenser
-from . import kaldiInterface
+import ark
+import batchdispenser
+import kaldiInterface
 
 __all__ = ["ark", "batchdispenser", "kaldiInterface"]

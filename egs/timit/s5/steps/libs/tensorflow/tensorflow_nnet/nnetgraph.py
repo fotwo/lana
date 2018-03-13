@@ -4,8 +4,8 @@
 
 import tensorflow as tf
 import numpy as np
-from .nnetlayer import FFLayer
-from . import nnetactivations
+from nnetlayer import FFLayer
+import nnetactivations
 
 import pdb
 
@@ -63,7 +63,7 @@ class DNN(NnetGraph):
             layer = FFLayer(self.num_units, self.activation)
                 
             #output layer
-            outlayer = FFLayer(self.output_dim, nnetactivations.Tf_wrapper(None, lambda x :x), 0)
+            outlayer = FFLayer(self.output_dim, nnetactivations.Tf_wrapper(None, x), 0)
             
             #do the forward computation with dropout
             

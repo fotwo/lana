@@ -3,8 +3,8 @@
 
 # This module containing the implementation of neural network training with tensorflow
 
-from . import nnet
-from . import nnetactivations
-from . import nnetgraph
-from . import nnetlayer
+import nnet
+import nnetactivations
+import nnetgraph
+import nnetlayer
 __all__ = ["nnet", "nnetactivations", "nnetgraph", "nnetlayer"]

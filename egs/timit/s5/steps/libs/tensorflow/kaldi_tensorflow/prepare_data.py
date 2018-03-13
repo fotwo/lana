@@ -8,9 +8,9 @@ import os
 from shutil import copyfile
 from random import shuffle
 
-from . import ark
+import ark
 import feat
-from . import kaldiInterface
+import kaldiInterface
 
 ##This function will compute the features of all segments and save them on disk
 #
