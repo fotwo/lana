@@ -18,6 +18,7 @@
 import os
 import sys
 import argparse
+import ast
 from six.moves import configparser
 from pdb import set_trace
 
@@ -50,9 +51,9 @@ def get_args():
     parser.add_argument("--basic-conf-file",type=str,required=True,dest='basic_conf_file')
 
     # params for precedure.
-    parser.add_argument("--trian-nnet",type=bool,dest='train_nnet',default=True)
+    parser.add_argument("--train-nnet",type=ast.literal_eval,dest='train_nnet',default=True)
 
-    parser.add_argument("--test-nnet",type=bool,dest='test_nnet',default=True)
+    parser.add_argument("--test-nnet",type=ast.literal_eval,dest='test_nnet',default=True)
 
     # networks hyper-params.
     parser.add_argument("--context-width",type=int,dest='context_width',
@@ -209,7 +210,7 @@ config.set('nnet','valid_retries',str(args.valid_retries))
 config.set('nnet','check_freq',str(args.check_frequency))
 config.set('nnet','visualise',str(args.visualize))
 #
-# set_trace()
+set_trace()
 #create the neural net
 Nnet = nnet.Nnet(config, input_dim, num_labels)
 
