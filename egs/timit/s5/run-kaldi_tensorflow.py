@@ -249,10 +249,14 @@ if args.train_nnet:
     print('alifile_in_pdftxt: ' + alifile_in_pdftxt)
     # os.system('. ./path.sh')
     os.system('source %s' % (current_dir + '/path.sh'))
-    os.system('cat %s > %s' % (' '.join(alifiles), alifile))
-    os.system('gunzip -c %s > %s' % (alifile, alifile_unzip))
-    os.system('ali-to-pdf %s ark:%s ark,t:%s' % (ali_final_mdl, alifile_unzip, alifile_in_pdftxt)) 
-    os.system('gzip -c %s > %s' % (alifile_in_pdftxt, alifile_in_pdftxt_gzipped))
+    if(not os.path.isfile(alifile)):
+        os.system('cat %s > %s' % (' '.join(alifiles), alifile))
+    if(not os.path.isfile(alifile_unzip)):
+        os.system('gunzip -c %s > %s' % (alifile, alifile_unzip))
+    if(not os.path.isfile(alifile_in_pdftxt)):
+        os.system('ali-to-pdf %s ark:%s ark,t:%s' % (ali_final_mdl, alifile_unzip, alifile_in_pdftxt))
+    if(os.path.isfile(alifile_in_pdftxt_gzipped)):
+        os.system('gzip -c %s > %s' % (alifile_in_pdftxt, alifile_in_pdftxt_gzipped))
     #train the neural net
     # set_trace()
     print('------- training neural net ----------')
