@@ -1,4 +1,4 @@
-export KALDI_ROOT=/home/fut/kaldi-kaldi-tensorflow
+export KALDI_ROOT=/home/fut/work-kaldi_tensorflow/lana/kaldi
 [ -f $KALDI_ROOT/tools/env.sh ] && . $KALDI_ROOT/tools/env.sh
 export PATH=$PWD/utils/:$KALDI_ROOT/tools/openfst/bin:$KALDI_ROOT/tools/irstlm/bin/:$PWD:$PATH
 [ ! -f $KALDI_ROOT/tools/config/common_path.sh ] && echo >&2 "The standard file $KALDI_ROOT/tools/config/common_path.sh is not present -> Exit!" && exit 1
@@ -26,4 +26,11 @@ export LC_ALL=C
 # $PATH
 
 
-export PYTHONPATH=`pwd`/steps/:`pwd`/steps/libs:$PYTHONPATH
+# export PYTHONPATH=`pwd`/steps/:`pwd`/steps/libs:$PYTHONPATH
+# there is a sub-dir called 'tensorflow' in this 'libs' dir, which prevents python normally uses the real tensorflow
+# you may encounter the python report error: AttributeError: 'module' object has no attribute ******
+
+# Actually, we do not need to export the PYTHONPATH specially, as my tensorflow script will append the these two dir.
+# sys.path.append("steps")
+# sys.path.append('steps/libs/')
+# export PYTHONPATH=`pwd`/steps/:$PYTHONPATH
